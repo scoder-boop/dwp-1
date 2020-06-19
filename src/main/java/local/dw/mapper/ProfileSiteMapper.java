@@ -18,6 +18,7 @@ public class ProfileSiteMapper implements RowMapper<ProfileSite> {
     private static final String ACTIVE = "active";
     private static final String PASSWORD_REQUIRED = "password_required";
     private static final String PASSWORD = "password";
+    private static final String AUTH_DETAILS = "auth_details";
 
     public ProfileSiteMapper() {
     }
@@ -31,7 +32,8 @@ public class ProfileSiteMapper implements RowMapper<ProfileSite> {
                 resultSet.getString(LOGIN_STRING),
                 resultSet.getBoolean(ACTIVE),
                 resultSet.getBoolean(PASSWORD_REQUIRED),
-                resultSet.getString(PASSWORD)
+                resultSet.getString(PASSWORD),
+                resultSet.getString(AUTH_DETAILS)
         );
     }
 }

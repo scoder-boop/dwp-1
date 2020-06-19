@@ -7,13 +7,13 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import local.dw.service.ProfileSiteService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 
-import static io.dropwizard.testing.FixtureHelpers.fixture;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -28,7 +28,6 @@ import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import io.dropwizard.testing.junit5.ResourceExtension;
 import local.dw.api.Profile;
 import local.dw.api.Representation;
-import local.dw.dao.ProfilesDao;
 import local.dw.service.ProfilesService;
 
 @ExtendWith(DropwizardExtensionsSupport.class)
@@ -45,8 +44,9 @@ public class ProfilesResourceWithServiceTest {
 	private static final String PROFILES_ENDPOINT = "/profiles";
 
 	private static final ProfilesService profilesService = mock(ProfilesService.class);
+	private static final ProfileSiteService profileSiteService = mock(ProfileSiteService.class);
 	public static final ResourceExtension RESOURCES = ResourceExtension.builder()
-			.addResource(new ProfilesResourceWithService(profilesService)).build();
+			.addResource(new ProfilesResourceWithService(profilesService, profileSiteService)).build();
 	private ArgumentCaptor<Profile> profilesCaptor = ArgumentCaptor.forClass(Profile.class);
 	private static Profile profile;
 

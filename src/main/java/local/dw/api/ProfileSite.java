@@ -3,6 +3,8 @@ package local.dw.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.logback.shaded.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.List;
+
 public class ProfileSite {
     @NonNull
     private int profileId;
@@ -20,12 +22,14 @@ public class ProfileSite {
     private boolean passwordRequired;
     @NonNull
     private String password;
+    private String authDetails;
 
     public ProfileSite() {
     }
 
-    public ProfileSite(@NonNull int profileId, @NonNull int siteId, @NonNull FrequencyType frequencyType, @NonNull int frequency,
-                       @NonNull String loginString, @NonNull boolean active, @NonNull boolean passwordRequired, String password) {
+    public ProfileSite(@NonNull int profileId, @NonNull int siteId, @NonNull final FrequencyType frequencyType, @NonNull int frequency,
+                       @NonNull final String loginString, @NonNull boolean active, @NonNull boolean passwordRequired,
+                       final String password, final String authDetails) {
         this.profileId = profileId;
         this.siteId = siteId;
         this.frequencyType = frequencyType;
@@ -34,6 +38,7 @@ public class ProfileSite {
         this.active = active;
         this.passwordRequired = passwordRequired;
         this.password = password;
+        this.authDetails = authDetails;
     }
 
     @JsonProperty
@@ -108,6 +113,15 @@ public class ProfileSite {
         this.password = password;
     }
 
+    @JsonProperty
+    public String getAuthDetails() {
+        return authDetails;
+    }
+
+    public void setAuthDetails(final String authDetails) {
+        this.authDetails = authDetails;
+    }
+
     @Override
     public String toString() {
         return "ProfileSite{" +
@@ -116,8 +130,10 @@ public class ProfileSite {
                 ", frequencyType=" + frequencyType +
                 ", frequency=" + frequency +
                 ", loginString=" + loginString +
+                ", active=" + active +
                 ", passwordRequired=" + passwordRequired +
                 ", password=" + password +
+                ", authDetails=" + authDetails +
                 "}";
     }
 }

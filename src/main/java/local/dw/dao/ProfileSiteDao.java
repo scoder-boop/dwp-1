@@ -18,24 +18,26 @@ public interface ProfileSiteDao {
 
     @SqlUpdate("insert into profile_history (id, profile_id, event_time, event_time_epoch, event) "
             + "values(:id, :profileId, :eventTime, :eventTimeEpoch, :event);")
-    public boolean addProfileHistory(@BindBean final ProfileHistory profileHistory);
+    boolean addProfileHistory(@BindBean final ProfileHistory profileHistory);
 
 
-    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password from profileSite;")
-    public List<ProfileSite> getAllProfileSites();
+    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password, auth_details " +
+            "from profileSite;")
+    List<ProfileSite> getAllProfileSites();
 
 
-    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password " +
+    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password, auth_details " +
             "from profileSite " +
             "where profile_id = :profileId and site_id = :siteId;")
     List<ProfileSite> getProfileSite(int profileId, int siteId);
 
-    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password from profileSite where id = :id;")
-    public List<ProfileSite> getProfileSites(@Bind("id") final int id);
+    @SqlQuery("select profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password, auth_details f" +
+            "rom profileSite where id = :id;")
+    List<ProfileSite> getProfileSites(@Bind("id") final int id);
 
-    @SqlUpdate("insert into profileSite (profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password) "
-            + "values(:profile_id, :site_id, :frequency_type, :frequency, :login_string, :active, :password_required, :password);")
-    public boolean addProfileSite(@BindBean final ProfileSite profileSite);
+    @SqlUpdate("insert into profileSite (profile_id, site_id, frequency_type, frequency, login_string, active, password_required, password, auth_details) "
+            + "values(:profile_id, :site_id, :frequency_type, :frequency, :login_string, :active, :password_required, :password, :auth_details);")
+    boolean addProfileSite(@BindBean final ProfileSite profileSite);
 
     @Transaction
     default boolean addProfileSiteWithHistory(ProfileSite profileSite) {
@@ -52,9 +54,10 @@ public interface ProfileSiteDao {
             + ", active = coalesce(:active, active) "
             + ", password_required = coalesce(:password_required, password_required) "
             + ", password = coalesce(:password, password) "
+            + ", auth_details = coalesce(:auth_details, auth_details) "
             + "where profile_id = :profile_id "
             + "and site_id = :site_id;")
-    public boolean editProfileSite(@BindBean final ProfileSite profileSite);
+    boolean editProfileSite(@BindBean final ProfileSite profileSite);
 
     @Transaction
     default boolean editProfileSiteWithHistory(ProfileSite profileSite) {
@@ -65,7 +68,7 @@ public interface ProfileSiteDao {
     }
 
     @SqlUpdate("delete from profileSite where profile_id = :profile_id and site_id = :site_id;")
-    public boolean deleteProfileSite(@Bind("profile_id") final int profileId, @Bind("site_id") final int siteId);
+    boolean deleteProfileSite(@Bind("profile_id") final int profileId, @Bind("site_id") final int siteId);
 
     @Transaction
     default boolean deleteProfileSiteWithHistory(final int profileId, final int siteId) {

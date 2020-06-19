@@ -1,6 +1,10 @@
 CREATE database noisy;
 GRANT ALL PRIVILEGES ON noisy.* TO 'noisy'@'localhost' IDENTIFIED BY 'sssssss';
 
+
+SET FOREIGN_KEY_CHECKS=0;
+
+
 DROP TABLE IF EXISTS profile;
 CREATE TABLE profile
 ( id int unsigned not null auto_increment
@@ -54,9 +58,11 @@ INSERT INTO profile
 DROP TABLE IF EXISTS site;
 CREATE TABLE site
 ( id int unsigned not null auto_increment
+, name varchar(50) not null
 , site_type ENUM('APP','URL') not null DEFAULT 'URL'
 , connection_string varchar(50) not null
 , description varchar(50)
+, site_auth_details varchar(300)
 , PRIMARY KEY (id)
 );
 
@@ -70,6 +76,7 @@ CREATE TABLE profile_site
 , active boolean DEFAULT true
 , password_required boolean DEFAULT true
 , password varchar(50)
+, auth_details varchar(300)
 , PRIMARY KEY (profile_id, site_id)
 , FOREIGN KEY (profile_id)
           REFERENCES profile(id)

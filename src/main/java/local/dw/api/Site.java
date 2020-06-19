@@ -3,26 +3,34 @@ package local.dw.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.logback.shaded.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.List;
+
 public class Site {
     @NonNull
     private int id;
+    @NonNull
+    private String name;
     @NonNull
     private String siteType;
     @NonNull
     private String ConnectionString;
     @NonNull
     private String description;
+    private String siteAuthDetails;
 
     public Site() {
         super();
     }
 
-    public Site(@NonNull int id, @NonNull String siteType, @NonNull String connectionString, String description) {
+    public Site(@NonNull int id, @NonNull final String name, @NonNull final String siteType,
+                @NonNull final String connectionString, final String description, final String siteAuthDetails) {
         super();
         this.id = id;
+        this.name = name;
         this.siteType = siteType;
         ConnectionString = connectionString;
         this.description = description;
+        this.siteAuthDetails = siteAuthDetails;
     }
 
     @JsonProperty
@@ -32,6 +40,15 @@ public class Site {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @JsonProperty
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 
     @JsonProperty
@@ -61,13 +78,24 @@ public class Site {
         this.description = description;
     }
 
+    @JsonProperty
+    public String getSiteAuthDetails() {
+        return siteAuthDetails;
+    }
+
+    public void setSiteAuthDetails(String siteAuthDetails) {
+        this.siteAuthDetails = siteAuthDetails;
+    }
+
     @Override
     public String toString() {
         return "Site{" +
                 "id=" + id +
-                ", siteType= " + siteType +
-                ", ConnectionString= " + ConnectionString +
-                ", description= " + description +
+                ", name=" + name +
+                ", siteType=" + siteType +
+                ", ConnectionString=" + ConnectionString +
+                ", description=" + description +
+                ", siteAuthDetails=" + siteAuthDetails +
                 "}";
     }
 }

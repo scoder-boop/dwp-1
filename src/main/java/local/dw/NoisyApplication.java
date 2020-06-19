@@ -62,7 +62,7 @@ public class NoisyApplication extends Application<NoisyConfiguration> {
 		final ProfilesService profilesService = new ProfilesService(profilesDao);
 		final ProfileSiteService profileSiteService = new ProfileSiteService(profileSiteDao);
 		environment.healthChecks().register("database", new NoisyHealthCheck(profilesDao));
-		environment.jersey().register(new ProfilesResourceWithService(profilesService));
+		environment.jersey().register(new ProfilesResourceWithService(profilesService, profileSiteService));
 //		environment.jersey().register(ProfilesResource.class);
 
 		/*

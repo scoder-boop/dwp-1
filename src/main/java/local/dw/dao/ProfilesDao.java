@@ -38,14 +38,14 @@ public interface ProfilesDao {
 	public boolean addProfile(@BindBean final Profile profile);
 
 	@Transaction
-	default int addProfileWithHistory ( final Profile profile) {
+	default Profile addProfileWithHistory (final Profile profile) {
 		profile.setActive(true);
 		addProfile(profile);
 		int id = lastInsertId();
 		profile.setId(id);
 		ProfileHistory profileHistory = new ProfileHistory(id, "Profile Created: " + profile.toString());
 		addProfileHistory(profileHistory);
-		return id;
+		return getProfile(id);
 	}
 
 	@SqlUpdate("update profile "

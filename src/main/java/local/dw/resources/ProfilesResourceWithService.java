@@ -1,7 +1,6 @@
 package local.dw.resources;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -16,6 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import local.dw.api.ProfileSite;
+import local.dw.service.ProfileSiteService;
 import org.eclipse.jetty.http.HttpStatus;
 import com.codahale.metrics.annotation.Timed;
 
@@ -30,10 +31,12 @@ import local.dw.service.ProfilesService;
 public class ProfilesResourceWithService {
 
 	private ProfilesService profilesService;
+	private ProfileSiteService profileSiteService;
 
 	@Inject
-	public ProfilesResourceWithService(ProfilesService profilesService) {
+	public ProfilesResourceWithService(ProfilesService profilesService, ProfileSiteService profileSiteService) {
 		this.profilesService = profilesService;
+		this.profileSiteService = profileSiteService;
 	}
 
 	
@@ -78,6 +81,7 @@ public class ProfilesResourceWithService {
 	@Timed
 	@Path("{id}")
 	public Representation<Profile> editProfile(@NotNull @Valid final Profile profile, @PathParam("id") final int id) {
+		//TODO why?
 		profile.setId(id);
 		return new Representation<Profile>(HttpStatus.OK_200, profilesService.editProfile(profile));
 	}
@@ -90,4 +94,40 @@ public class ProfilesResourceWithService {
 		return new Representation<String>(HttpStatus.OK_200, null);
 	}
 
+	@GET
+	@Timed
+	@Path("{profileId}/{siteId}")
+	public Representation<List<ProfileSite>> getProfileSite(@PathParam("profileId") final int profileId, @PathParam("siteId") final int siteId) {
+		return new Representation<List<ProfileSite>>(HttpStatus.OK_200, profileSiteService.getProfileSite(profileId, siteId));
+	}
+
+	// PROFILE SITES
+	@GET
+	@Timed
+	@Path("{profileId}/sites")
+	public Representation<List<ProfileSite>> getProfileSites(@PathParam("profileId") final int id) {
+		return new Representation<List<ProfileSite>>(HttpStatus.OK_200, profileSiteService.getProfileSites(id));
+	}
+
+	@POST
+	@Timed
+	@Path("{profileId}/site")
+	public Representation<List<ProfileSite>> createProfileSite(@NotNull @Valid final ProfileSite profileSite, @PathParam("profileId") final int profileId) {
+		return new Representation<List<ProfileSite>>(HttpStatus.OK_200, profileSiteService.createProfileSite(profileSite));
+	}
+
+	//TODO put List of sites
+
+	@PUT
+	@Timed
+	@Path("{profileId}/site")
+	public Representation<List<ProfileSite>> editProfileSite(@NotNull @Valid final ProfileSite profileSite, @PathParam("profileId") final int profileId) {
+		//TODO Why?
+		profileSite.setProfileId(profileId);
+		return new Representation<List<ProfileSite>>(HttpStatus.OK_200, profileSiteService.editProfileSite(profileSite));
+	}
+
+    //TODO PROFILE INTERESTS
+
+	// TODO PROFILE HISTORY
 }

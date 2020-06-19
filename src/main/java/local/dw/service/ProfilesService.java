@@ -54,8 +54,7 @@ public class ProfilesService {
 
 	public Profile createProfile(final Profile profile) {
 		//TODO make into transaction
-		final int id =  profilesDao.addProfileWithHistory(profile);
-		return profilesDao.getProfile(id);
+		return profilesDao.addProfileWithHistory(profile);
 	}
 
 	public Profile editProfile(final Profile profile) {
