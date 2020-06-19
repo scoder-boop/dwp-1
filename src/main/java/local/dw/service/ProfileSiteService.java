@@ -1,6 +1,7 @@
 package local.dw.service;
 
 
+import local.dw.api.Profile;
 import local.dw.api.ProfileSite;
 import local.dw.dao.ProfileSiteDao;
 
@@ -26,6 +27,12 @@ public class ProfileSiteService {
 
     public List<ProfileSite> getProfileSite(final int profileId, final int siteId) {
         return profileSiteDao.getProfileSite(profileId, siteId);
+    }
+
+    public List<ProfileSite>  createProfileSite(final ProfileSite profileSite) {
+        //TODO make into transaction
+        final boolean result =  profileSiteDao.addProfileSiteWithHistory(profileSite);
+        return profileSiteDao.getProfileSites(profileSite.getProfileId());
     }
 
     public List<ProfileSite> editProfileSite(final ProfileSite profileSite) {
