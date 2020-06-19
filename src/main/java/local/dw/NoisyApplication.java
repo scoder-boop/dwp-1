@@ -6,6 +6,10 @@ import javax.inject.Singleton;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
+import local.dw.api.ProfileSite;
+import local.dw.dao.ProfileHistoryDao;
+import local.dw.dao.ProfileSiteDao;
+import local.dw.service.ProfileSiteService;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.internal.inject.AbstractBinder;
 import org.jdbi.v3.core.Jdbi;
@@ -43,7 +47,9 @@ public class NoisyApplication extends Application<NoisyConfiguration> {
 		final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), dataSource, "noisy");
 		// jdbi 3 requirement for SQL
 		jdbi.installPlugin(new SqlObjectPlugin());
-		final ProfilesDao dao = jdbi.onDemand(ProfilesDao.class);
+		final ProfilesDao profilesDao = jdbi.onDemand(ProfilesDao.class);
+		final ProfileSiteDao profileSiteDao = jdbi.onDemand(ProfileSiteDao.class);
+		final ProfileHistoryDao profileHistoryDao = jdbi.onDemand(ProfileHistoryDao.class);
 		// extra
 		environment.jersey().register(new AbstractBinder() {
 			@Override
@@ -53,8 +59,9 @@ public class NoisyApplication extends Application<NoisyConfiguration> {
 			}
 		});
 
-		final ProfilesService profilesService = new ProfilesService(dao);
-		environment.healthChecks().register("database", new NoisyHealthCheck(dao));
+		final ProfilesService profilesService = new ProfilesService(profilesDao);
+		final ProfileSiteService profileSiteService = new ProfileSiteService(profileSiteDao);
+		environment.healthChecks().register("database", new NoisyHealthCheck(profilesDao));
 		environment.jersey().register(new ProfilesResourceWithService(profilesService));
 //		environment.jersey().register(ProfilesResource.class);
 

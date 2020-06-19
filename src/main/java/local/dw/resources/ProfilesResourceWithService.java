@@ -39,8 +39,17 @@ public class ProfilesResourceWithService {
 	
 	@GET
 	@Timed
+	@Path("/active")
 	public Representation<List<Profile>> getProfiles() {
 		List<Profile> profiles = profilesService.getProfiles();
+		return new Representation<List<Profile>>(HttpStatus.OK_200, profiles);
+	}
+
+	@GET
+	@Timed
+	@Path("/all")
+	public Representation<List<Profile>> getAllProfiles() {
+		List<Profile> profiles = profilesService.getAllProfiles();
 		return new Representation<List<Profile>>(HttpStatus.OK_200, profiles);
 	}
 

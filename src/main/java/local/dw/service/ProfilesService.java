@@ -7,15 +7,16 @@ import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 
+import local.dw.api.ProfileHistory;
+import local.dw.dao.ProfileHistoryDao;
 import org.jdbi.v3.core.statement.UnableToExecuteStatementException;
-import org.jdbi.v3.sqlobject.CreateSqlObject;
 
 import local.dw.api.Profile;
 import local.dw.dao.ProfilesDao;
 
 public class ProfilesService {
 
-	private static final String PART_NOT_FOUND = "Profile id %s not found.";
+	private static final String PROFILE_NOT_FOUND = "Profile id %s not found.";
 	private static final String DATABASE_REACH_ERROR = "Could not reach the MySQL database. The database may be down or there may be network connectivity issues. Details: ";
 	private static final String DATABASE_CONNECTION_ERROR = "Could not create a connection to the MySQL database. The database configurations are likely incorrect. Details: ";
 	private static final String DATABASE_UNEXPECTED_ERROR = "Unexpected error occurred while attempting to reach the database. Details: ";
@@ -27,12 +28,16 @@ public class ProfilesService {
 	private ProfilesDao profilesDao;
 
 	@Inject
-	public ProfilesService(ProfilesDao dao) {
-		this.profilesDao = dao;
+	public ProfilesService(final ProfilesDao profilesDao) {
+		this.profilesDao = profilesDao;
 	}
 
 	public List<Profile> getProfiles() {
 		return profilesDao.getProfiles();
+	}
+
+	public List<Profile> getAllProfiles() {
+		return profilesDao.getAllProfiles();
 	}
 
 	public List<Profile> getInactiveProfiles() {
@@ -42,31 +47,35 @@ public class ProfilesService {
 	public Profile getProfile(int id) {
 		Profile profile = profilesDao.getProfile(id);
 		if (Objects.isNull(profile)) {
-			throw new WebApplicationException(String.format(PART_NOT_FOUND, id), Status.NOT_FOUND);
+			throw new WebApplicationException(String.format(PROFILE_NOT_FOUND, id), Status.NOT_FOUND);
 		}
 		return profile;
 	}
 
-	public Profile createProfile(Profile profile) {
-		profilesDao.createProfile(profile);
-		return profilesDao.getProfile(profilesDao.lastInsertId());
+	public Profile createProfile(final Profile profile) {
+		//TODO make into transaction
+		final int id =  profilesDao.addProfileWithHistory(profile);
+		return profilesDao.getProfile(id);
 	}
 
-	public Profile editProfile(Profile profile) {
+	public Profile editProfile(final Profile profile) {
 		if (Objects.isNull(profilesDao.getProfile(profile.getId()))) {
-			throw new WebApplicationException(String.format(PART_NOT_FOUND, profile.getId()), Status.NOT_FOUND);
+			throw new WebApplicationException(String.format(PROFILE_NOT_FOUND, profile.getId()), Status.NOT_FOUND);
 		}
-		profilesDao.editProfile(profile);
+		boolean result = profilesDao.editProfileWithHistory(profile);
+		if (!result) {
+			throw new WebApplicationException(String.format(PROFILE_NOT_FOUND, profile.getId()), Status.NOT_FOUND);
+		}
 		return profilesDao.getProfile(profile.getId());
 	}
 
 	public String deleteProfile(final int id) {
-		boolean result = profilesDao.deleteProfile(id);
+		boolean result = profilesDao.deleteProfileWithHistory(id);
 		if (result) {
 			return SUCCESS;
 		}
 		//or just return FAIL
-		throw new WebApplicationException(String.format(PART_NOT_FOUND, id), Status.NOT_FOUND);
+		throw new WebApplicationException(String.format(PROFILE_NOT_FOUND, id), Status.NOT_FOUND);
 	}
 
 	public String performHealthCheck() {

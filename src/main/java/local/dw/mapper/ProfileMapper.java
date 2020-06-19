@@ -33,7 +33,6 @@ public class ProfileMapper implements RowMapper<Profile> {
 				resultSet.getString(ADDRESS),
 				resultSet.getInt(PHONE_NUMBER),
 				resultSet.getBoolean(ACTIVE)
-				);
+		);
 	}
-
 }

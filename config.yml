@@ -2,7 +2,7 @@ database:
   driverClass: com.mysql.jdbc.Driver
   url: jdbc:mysql://localhost:3306/noisy?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
   user: noisy
-  password: noisyb****d 
+  password: 9Bop73T
   maxWaitForConnection: 1s
   validationQuery: "SELECT 1"
   validationQueryTimeout: 3s

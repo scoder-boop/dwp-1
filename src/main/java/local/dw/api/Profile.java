@@ -1,7 +1,6 @@
 package local.dw.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.dropwizard.logback.shaded.checkerframework.checker.nullness.qual.NonNull;
 
 public class Profile {
@@ -51,7 +50,7 @@ public class Profile {
 		return username;
 	}
 
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
 
@@ -60,7 +59,7 @@ public class Profile {
 		return firstName;
 	}
 
-	public void setFirstName(String firstName) {
+	public void setFirstName(final String firstName) {
 		this.firstName = firstName;
 	}
 
@@ -69,7 +68,7 @@ public class Profile {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(final String lastName) {
 		this.lastName = lastName;
 	}
 
@@ -78,7 +77,7 @@ public class Profile {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
@@ -87,7 +86,7 @@ public class Profile {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(final String address) {
 		this.address = address;
 	}
 
@@ -112,9 +111,9 @@ public class Profile {
 
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
+		return "Profile {id=" + id + ", username=" + username + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", email=" + email + ", address=" + address + ", phoneNumber=" + phoneNumber + ", active=" + active
-				+ "]";
+				+ "}";
 	}
 
 }
