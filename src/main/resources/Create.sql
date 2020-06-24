@@ -63,6 +63,8 @@ CREATE TABLE site
 , connection_string varchar(50) not null
 , description varchar(50)
 , site_auth_details varchar(300)
+, accept_xpath varchar(300)
+, useable boolean DEFAULT true
 , PRIMARY KEY (id)
 );
 
@@ -95,6 +97,19 @@ CREATE TABLE profile_history
 , PRIMARY KEY (id)
 , FOREIGN KEY (profile_id)
           REFERENCES profile(id)
+          ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS site_history;
+CREATE TABLE site_history
+( id int unsigned not null auto_increment
+, site_id int unsigned not null
+, event_time timestamp DEFAULT CURRENT_TIMESTAMP
+, event_time_epoch long not null
+, event varchar(150)
+, PRIMARY KEY (id)
+, FOREIGN KEY (site_id)
+          REFERENCES site(id)
           ON DELETE CASCADE
 );
 

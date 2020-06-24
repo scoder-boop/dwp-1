@@ -3,8 +3,6 @@ package local.dw.api;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.logback.shaded.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
-
 public class Site {
     @NonNull
     private int id;
@@ -13,24 +11,29 @@ public class Site {
     @NonNull
     private String siteType;
     @NonNull
-    private String ConnectionString;
+    private String connectionString;
     @NonNull
     private String description;
     private String siteAuthDetails;
+    private String acceptXpath;
+    private boolean useable;
 
     public Site() {
         super();
     }
 
     public Site(@NonNull int id, @NonNull final String name, @NonNull final String siteType,
-                @NonNull final String connectionString, final String description, final String siteAuthDetails) {
+                @NonNull final String connectionString, final String description, final String siteAuthDetails,
+                final String acceptXpath, boolean useable) {
         super();
         this.id = id;
         this.name = name;
         this.siteType = siteType;
-        ConnectionString = connectionString;
+        this.connectionString = connectionString;
         this.description = description;
         this.siteAuthDetails = siteAuthDetails;
+        this.acceptXpath = acceptXpath;
+        this.useable = useable;
     }
 
     @JsonProperty
@@ -62,11 +65,11 @@ public class Site {
 
     @JsonProperty
     public String getConnectionString() {
-        return ConnectionString;
+        return connectionString;
     }
 
     public void setConnectionString(final String connectionString) {
-        ConnectionString = connectionString;
+        this.connectionString = connectionString;
     }
 
     @JsonProperty
@@ -87,15 +90,33 @@ public class Site {
         this.siteAuthDetails = siteAuthDetails;
     }
 
+    public String getAcceptXpath() {
+        return acceptXpath;
+    }
+
+    public void setAcceptXpath(String acceptXpath) {
+        this.acceptXpath = acceptXpath;
+    }
+
+    public boolean isUseable() {
+        return useable;
+    }
+
+    public void setUseable(boolean useable) {
+        this.useable = useable;
+    }
+
     @Override
     public String toString() {
         return "Site{" +
                 "id=" + id +
                 ", name=" + name +
                 ", siteType=" + siteType +
-                ", ConnectionString=" + ConnectionString +
+                ", ConnectionString=" + connectionString +
                 ", description=" + description +
                 ", siteAuthDetails=" + siteAuthDetails +
+                ", acceptXpath=" + acceptXpath +
+                ", useable=" + useable +
                 "}";
     }
 }
