@@ -87,6 +87,18 @@ CREATE TABLE profile_site
           REFERENCES site(id)
 );
 
+DROP TABLE IF EXISTS profile_interest;
+CREATE TABLE profile_interest
+( id int unsigned not null auto_increment
+, profile_id int unsigned not null
+, topic varchar(20) not null
+, active boolean DEFAULT true
+, PRIMARY KEY (id)
+, FOREIGN KEY (profile_id)
+          REFERENCES profile(id)
+          ON DELETE CASCADE
+);
+
 DROP TABLE IF EXISTS profile_history;
 CREATE TABLE profile_history
 ( id int unsigned not null auto_increment

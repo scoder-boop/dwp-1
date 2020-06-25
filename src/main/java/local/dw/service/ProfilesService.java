@@ -23,8 +23,6 @@ public class ProfilesService {
 	private static final String SUCCESS = "Success...";
 	private static final String UNEXPECTED_ERROR = "An unexpected error occurred while deleting profile.";
 
-//	@CreateSqlObject
-//	abstract ProfilesDao profilesDao;
 	private ProfilesDao profilesDao;
 
 	@Inject
@@ -53,7 +51,6 @@ public class ProfilesService {
 	}
 
 	public Profile createProfile(final Profile profile) {
-		//TODO make into transaction
 		return profilesDao.addProfileWithHistory(profile);
 	}
 

@@ -127,7 +127,4 @@ public class ProfilesResourceWithService {
 		return new Representation<List<ProfileSite>>(HttpStatus.OK_200, profileSiteService.editProfileSite(profileSite));
 	}
 
-    //TODO PROFILE INTERESTS
-
-	// TODO PROFILE HISTORY
 }
